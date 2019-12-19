@@ -1,4 +1,4 @@
-from pokegan import image_size, batch_size
+from pokegan import image_size, batch_size, num_channels
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import torch.utils.data
@@ -16,7 +16,11 @@ class ImageProcessor(object):
         image[trans_mask] = [255, 255, 255, 255]
         image = cv2.cvtColor(image, cv2.COLOR_BGRA2RGB)
         image = cv2.resize(image, (image_size, image_size))
-        return np.array(image)
+        image = np.array(image)
+        image = image.reshape(num_channels, image_size, image_size)
+        image = torch.from_numpy(image).float()
+        image = image / torch.max(image)
+        return image
 
 class PokemonImageDataset(torch.utils.data.Dataset):
 

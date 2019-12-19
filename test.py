@@ -35,11 +35,13 @@ def view_batch_samples():
 
 if __name__ == "__main__":
     model = Generator()
-    model.load_state_dict(torch.load('./generator.pt'))
+    model.load_state_dict(torch.load('./PokeGAN/generator.pt'))
+    model.eval()
     tensor = torch.randn(5, 100, 1, 1)
     output = model(tensor)
-    image = output[3].detach()
+    image = output[3] / torch.max(output)
     print(image.min())
-    image = np.transpose(image, (1,2,0))
+    image = np.transpose(image.detach(), (1,2,0))
     plt.imshow(image)
     plt.show()
+    

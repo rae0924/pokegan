@@ -16,8 +16,7 @@ class GAN(object):
 
     def train(self, epochs=10):
         data_set = PokemonImageDataset(transform=transforms.Compose([
-            ImageProcessor(),
-            transforms.ToTensor()
+            ImageProcessor()
         ]))
         data_loader = DataLoader(data_set, batch_size=batch_size, shuffle=True)
 
