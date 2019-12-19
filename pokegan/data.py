@@ -6,7 +6,7 @@ import numpy as np
 import cv2
 import os
 
-end_index = 151
+num_pokemons = 809
 endpoint = 'https://www.pokemon.com/us/pokedex/'
 
 class ImageProcessor(object):
@@ -28,9 +28,13 @@ class PokemonImageDataset(torch.utils.data.Dataset):
                 os.mkdir(os.path.dirname(self.data_root))
             os.mkdir(self.data_root)
             self.extract()
-    
-    def extract(self):
-         for index in range(1, end_index + 1):
+        if len(os.listdir(self.data_root)) < num_pokemons:
+            index = len(os.listdir(self.data_root))
+            self.extract(start_index=index)
+
+    def extract(self, start_index=1):
+        print("extracting...")
+        for index in range(start_index, num_pokemons + 1):
             url = endpoint + str(index)
             response = urlopen(url).read()
             soup = BeautifulSoup(response, 'html.parser')
@@ -39,7 +43,7 @@ class PokemonImageDataset(torch.utils.data.Dataset):
             image_path = os.path.join(self.data_root, "{0:0=3d}.jpg".format(index))
             with open(image_path, 'wb') as output:
                 output.write(image)
-    
+        print("done extracting")
     def __len__(self):
         return len(os.listdir(self.data_root))
     

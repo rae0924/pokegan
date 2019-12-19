@@ -1,4 +1,5 @@
 from pokegan.data import PokemonImageDataset, ImageProcessor
+from pokegan import Generator
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 import numpy as np
@@ -30,5 +31,15 @@ def view_batch_samples():
     plt.imshow(batch[0])
     plt.show()
 
+
+
 if __name__ == "__main__":
-    view_batch_samples()
+    model = Generator()
+    model.load_state_dict(torch.load('./generator.pt'))
+    tensor = torch.randn(5, 100, 1, 1)
+    output = model(tensor)
+    image = output[3].detach()
+    print(image.min())
+    image = np.transpose(image, (1,2,0))
+    plt.imshow(image)
+    plt.show()
