@@ -1,5 +1,5 @@
 # PokeGAN
-Trying to implement generate Pokemons with GANs.
+Trying to generate Pokemons with GANs.
 
 # 12/19/2019
 Initial testing yielded some unsatisfactory results. Unlike the previous attempts, the images produced were somewhat
